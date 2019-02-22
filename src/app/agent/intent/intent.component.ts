@@ -30,7 +30,7 @@ export class IntentComponent implements OnInit {
       this.intentTypes = IntentService.intentTypes;
       this.intentTypesArray = Object.keys(this.intentTypes);
 
-      
+
   }
 
   loadForm(){
@@ -66,7 +66,7 @@ export class IntentComponent implements OnInit {
         this.intent = data.story;
         this.loadForm();
         this.coreService.setDataForm(this.intentForm, this.intentFormFields, this.intent);
-    });   
+    });
 
 
 
@@ -142,7 +142,7 @@ export class IntentComponent implements OnInit {
     }
 
     this.intentService.saveIntent(form)
-      .then(c => {
+      .subscribe(c => {
         this.message = 'Intent created!';
         this._router.navigate(["/agent/default/edit-intent", c["_id"]])
       })

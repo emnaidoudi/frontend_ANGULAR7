@@ -12,11 +12,13 @@ export class IntentService {
     'list': 'List',
   };
 
+  URL_INTENT_CRUD='http://127.0.0.1:4200/api/chatbot/intents';
+
   constructor(public http: HttpClient) {
   }
 
   getIntents(){
-    return this.http.get('http://127.0.0.1:4200/api/chatbot/crud/intents');
+    return this.http.get(this.URL_INTENT_CRUD);
   }
 
   getIntent(id) {
@@ -33,15 +35,15 @@ export class IntentService {
   }
 
   create_intent(intent) {
-    return this.http.post(environment.ikyBackend + `intents/`, intent).toPromise();
+    return this.http.post(this.URL_INTENT_CRUD,intent);
   }
 
   update_intent(intent) {
-    return this.http.put(environment.ikyBackend + `intents/${intent._id}`, intent).toPromise();
+    return this.http.put(environment.ikyBackend + `intents/${intent._id}`, intent);
   }
 
   delete_intent(tag) {
-    return this.http.delete("http://127.0.0.1:4200/api/chatbot/crud/intents/"+tag);
+    return this.http.delete(this.URL_INTENT_CRUD+"/"+tag);
   }
 
   importIntents(fileToUpload: File){

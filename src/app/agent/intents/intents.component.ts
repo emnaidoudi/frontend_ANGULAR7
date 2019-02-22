@@ -17,6 +17,7 @@ export class IntentsComponent implements OnInit {
 
   intents: any;
 
+
   constructor(public intentService: IntentService, private _activatedRoute: ActivatedRoute,
      private _router: Router,private trainingService:TrainingService, private coreService: UtilsService) { }
 
@@ -26,6 +27,17 @@ export class IntentsComponent implements OnInit {
       )
   }
 
+
+//--------------------------------------------  MINE  ---------------------------------------------------------
+  save(){
+    this.intentService.create_intent({
+      "tag":  "love2",
+      "patterns":  ["i love you","love you","i like you"],
+      "responses":  ["oh, i love you too","love you more","me too honey"]
+      }).subscribe();
+  }
+
+//--------------------------------------------------------------------------------------------------------------
 
   add() {
     this._router.navigate(["/agent/default/create-intent"])
