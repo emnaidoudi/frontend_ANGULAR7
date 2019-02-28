@@ -2,9 +2,10 @@ import { Component, OnInit, Input,AfterViewChecked, ElementRef, ViewChild } from
 import { ChatService } from '../../services/chat.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { trigger,style,transition,animate,keyframes,query,stagger } from '@angular/animations';
+import { stringify } from '@angular/core/src/render3/util';
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // tslint:disab'le-next-line:component-selector
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
@@ -33,9 +34,10 @@ export class ChatComponent implements OnInit {
 
   messages: Message[] = [];
   responses :string[]=[];
+  returned_response:string;
+
 
   hawel="emna";
-  one_response: string;
   prettyChatCurrent;
 
   chatForm: FormGroup;
@@ -65,15 +67,9 @@ export class ChatComponent implements OnInit {
       'missingParameters': []
     };
 
-    this.chatService.converse(this.chatInitial)
-      .then((c: any) => {
-        c.owner = 'chat';
-        this.changeCurrent(c);
+   }
 
-        this.render_bubbles(c)
-      });
-  }
-
+   
 
 scrollToBottom(): void {
     try {
@@ -81,25 +77,16 @@ scrollToBottom(): void {
     } catch(err) { }
 }
 
-  render_bubbles(c){
-    c.speechResponse.forEach((item, index) => {
-      if (index  == 0){
-          this.add_to_messages(item,"chat")
-      }else{
-        setTimeout(()=>{
-          this.add_to_messages(item,"chat")
-        },500)
-      }
 
-  });
-  }
-  add_to_messages(message,author){
-      let new_message = new Message(message,author)
+  add_to_messages(message,resp,author){
+
+      let new_message = new Message(message,resp,author)
+      new_message.response=resp;
       this.messages.push(new_message);
       setTimeout(()=>{
         this.scrollToBottom();
       },300)
-
+        console.log("tiiii "+new_message.response)      
   }
 
   changeCurrent(c) {
@@ -113,49 +100,57 @@ scrollToBottom(): void {
     const sendMessage = {
       ... this.chatCurrent,
       input: form.input,
+      response: this.returned_response,
       owner: 'user'
     };
-    this.add_to_messages(form.input,"user")
+    //this.response(form.input);
 
-    this.changeCurrent(sendMessage);
-    this.chatService.converse(sendMessage)
-      .then((c: any) => {
-        c.owner = 'chat';
-        this.changeCurrent(c);
-        this.chatForm.reset();
-        setTimeout(
-          ()=>{
-            this.render_bubbles(c);
-          },1000
-        )
-
-      });
-      this.response(form.input);
-
+    async function delay(ms: number) {
+      return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
+    (async () => { 
+      // Do something before delay
+      if(form.input!=null){
+        this.chatService.getResponse(form.input).subscribe(
+          resp=>{
+            this.returned_response=resp["response"];
+            //  this.responses.push(resp["response"]);
+            console.log("response :"+this.returned_response);
+          }
+        )}
+  
+      await delay(1000);
+  
+      // Do something after
+      this.add_to_messages(form.input,this.returned_response,"user")
+      this.changeCurrent(sendMessage);
+  })();
+     
+  }
 
-
-  response(input){
+  /*response(input){
     const form = this.chatForm.value;
     if(form.input!=null){
       this.chatService.getResponse(input).subscribe(
         resp=>{
-          this.one_response=resp["response"];
+          this.returned_response=resp["response"];
           this.responses.push(resp["response"]);
-          console.log("response :"+this.one_response["response"]);
+          console.log("response :"+this.returned_response);
         }
       )}
-  }
+  }*/
 
 }
 
 export class Message {
   content: string;
   author: string;
+  response: string;
 
-  constructor(content: string, author: string){
+  constructor(content: string,response :string, author: string){
     this.content = content;
     this.author = author;
+    this.response=response;
   }
 }

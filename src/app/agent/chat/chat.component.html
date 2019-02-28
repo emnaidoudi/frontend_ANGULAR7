@@ -1,7 +1,5 @@
 <!-- https://tburleson-layouts-demos.firebaseapp.com/#/docs -->
 
-
-
 <div fxLayout="row" fxFill>
   <mat-card fxFlex="30" fxLayout="column" >
     <div fxFlex="90" class="chat-container" #scrollMe>
@@ -12,56 +10,20 @@
             <span class="textright">{{message.content}}</span>
           </div>
         </div>
-        <!--test message here    {{response()}}-->
-
-        <div *ngFor="let response of responses"  [@listAnimation]="messages.length" >
-
-            <div  *ngIf="message.author=='user'" class="chat-message">
+          <div  *ngIf="message.author=='user'" class="chat-message">
                 <div class="chat-message-content">
-                  <span class="textright">{{response}}</span>
+                  <span class="textright">{{message.response}}</span>
                 </div>
-              </div>
-
-        <!--  <div  class="chat-message">
-          <div class="chat-message-content">
-            <span class="textleft">{{response}}
-              </span>
-          </div>
-        </div>-->
-
-      </div>
-
-
-
-
-       <!-- <div  *ngIf="message.content=='hello'" class="chat-message">
-          <div class="chat-message-content">
-            <span class="textleft"> chbik
-              </span>
-          </div>
         </div>
-        <div  *ngIf="message.content!='hello'" class="chat-message">
-            <div class="chat-message-content">
-              <span class="textleft"> mafhemtekch khouya hassen khra khatek
-                </span>
-            </div>
-        </div>-->
+      
           <div  *ngIf="message.author=='chat'" class="chat-message">
             <div class="chat-message-content">-->
-                <!----script>
-                    if ("message.content"=="hello")
-                    {"message.content"="chbik"}
-                    else {"message.content"="mafhemtekch khoya"}</script-->
-
-              <span class="textleft" [innerHTML]="message.content">
+                <span class="textleft" [innerHTML]="message.content">
                </span>
             </div>
           </div>
-
-
       </div>
     </div>
-
       <form [formGroup]="chatForm" *ngIf="chatForm" (submit)="send()" fxLayout="row" fxFlex="10" >
         <mat-input-container fxFlex>
           <input type="text" matInput formControlName="input" placeholder="Type your message here" autocomplete=off>
@@ -69,8 +31,5 @@
       </form>
     </mat-card>
 
-    <mat-card fxFlex="50" class="json-response">
-      <h3>POST /api/v1</h3>
-      <pre>{{prettyChatCurrent}}</pre>
-    </mat-card>
+
 </div>
