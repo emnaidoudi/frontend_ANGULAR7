@@ -30,8 +30,12 @@ import { trigger,style,transition,animate,keyframes,query,stagger } from '@angul
 export class ChatComponent implements OnInit {
   chatInitial;
   chatCurrent;
-  
+
   messages: Message[] = [];
+  responses :string[]=[];
+
+  hawel="emna";
+  one_response: string;
   prettyChatCurrent;
 
   chatForm: FormGroup;
@@ -74,7 +78,7 @@ export class ChatComponent implements OnInit {
 scrollToBottom(): void {
     try {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }                 
+    } catch(err) { }
 }
 
   render_bubbles(c){
@@ -95,9 +99,9 @@ scrollToBottom(): void {
       setTimeout(()=>{
         this.scrollToBottom();
       },300)
-      
+
   }
-  
+
   changeCurrent(c) {
     c.date = new Date();
     this.chatCurrent = c;
@@ -124,9 +128,24 @@ scrollToBottom(): void {
             this.render_bubbles(c);
           },1000
         )
-        
-      });
 
+      });
+      this.response(form.input);
+
+  }
+
+
+
+  response(input){
+    const form = this.chatForm.value;
+    if(form.input!=null){
+      this.chatService.getResponse(input).subscribe(
+        resp=>{
+          this.one_response=resp["response"];
+          this.responses.push(resp["response"]);
+          console.log("response :"+this.one_response["response"]);
+        }
+      )}
   }
 
 }

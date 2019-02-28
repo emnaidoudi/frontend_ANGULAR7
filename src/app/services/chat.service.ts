@@ -10,4 +10,8 @@ export class ChatService {
     return this.http.post(environment.ikyBackend + `api/v1`, intent).toPromise();
   }
 
+  getResponse(msg:string){
+    return this.http.get("http://127.0.0.1:4200/api/chatbot/basic/"+msg);
+  }
+
 }

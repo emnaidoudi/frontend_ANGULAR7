@@ -17,6 +17,7 @@ export class IntentService {
   constructor(public http: HttpClient) {
   }
 
+
   getIntents(){
     return this.http.get(this.URL_INTENT_CRUD);
   }
