@@ -12,7 +12,7 @@ export class IntentService {
     'list': 'List',
   };
 
-  URL_INTENT_CRUD='http://127.0.0.1:4200/api/chatbot/intents';
+  URL_INTENT_CRUD='http://127.0.0.1:4200/api/intents/';
 
   constructor(public http: HttpClient) {
   }
@@ -44,7 +44,7 @@ export class IntentService {
   }
 
   delete_intent(tag) {
-    return this.http.delete(this.URL_INTENT_CRUD+"/"+tag);
+    return this.http.delete(this.URL_INTENT_CRUD+tag);
   }
 
   importIntents(fileToUpload: File){

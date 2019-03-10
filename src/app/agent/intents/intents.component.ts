@@ -28,13 +28,15 @@ export class IntentsComponent implements OnInit {
   }
 
 
-//--------------------------------------------  MINE  ---------------------------------------------------------
+//---------------------------------------------  MINE  ---------------------------------------------------------
   save(){
     this.intentService.create_intent({
       "tag":  "love2",
       "patterns":  ["i love you","love you","i like you"],
       "responses":  ["oh, i love you too","love you more","me too honey"]
-      }).subscribe();
+      }).subscribe(a=>{this.ngOnInit();});
+      
+
   }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -54,10 +56,9 @@ export class IntentsComponent implements OnInit {
   delete(intent) {
     if (confirm('Are u sure want to delete this intent?')) {
       this.coreService.displayLoader(true);
-      this.intentService.delete_intent(intent['tag']).subscribe((s: any) => {
-        console.log(intent['tag'])
+      this.intentService.delete_intent(intent['tag']).subscribe(f=> {
         this.ngOnInit();
-          this.coreService.displayLoader(false);
+        this.coreService.displayLoader(false);
       });
     }
   }
